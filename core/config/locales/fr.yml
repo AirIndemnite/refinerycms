@@ -13,9 +13,9 @@ fr:
     welcome:
       there_are_no_users: Il n'y actuellement aucun utilisateur enregistré, nous allons donc vous enregistrer pour commencer.
     crudify:
-      created: '%{what} a été correctement créé.'
-      updated: '%{what} a été correctement mis à jour.'
-      destroyed: '%{what} a été correctement supprimé.'
+      created: "%{what} a été correctement créé."
+      updated: "%{what} a été correctement mis à jour."
+      destroyed: "%{what} a été correctement supprimé."
     site_bar:
       log_out: Me déconnecter
       switch_to_your_website: Voir le site
@@ -54,9 +54,9 @@ fr:
         button_text: Rechercher
         results_for_html: "Résultats de la recherche &#8216;<em>%{query}</em>&#8217;"
         no_results: Aucun résultat ne correspond à votre recherche
-        cancel_search: 'Annuler la recherche'
+        cancel_search: "Annuler la recherche"
         input:
-          placeholder: "Rechercher&8230;"
+          placeholder: "Rechercher"
           help: "Entrez ici le texte recherché. La longueur minimale est de 3 caractères."
       delete:
         message: "Êtes-vous sûr(e) de vouloir supprimer '%{title}'?"
