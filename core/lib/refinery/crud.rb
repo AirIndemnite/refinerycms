@@ -16,27 +16,28 @@
 
 module Refinery
   module Crud
-
     def self.default_options(model_name)
-      class_name = "#{model_name.to_s.camelize.gsub('/', '::')}".gsub('::::', '::')
+      class_name = model_name.to_s.camelize.gsub('/', '::').to_s.gsub('::::', '::')
       this_class = class_name.constantize.base_class
       singular_name = ActiveModel::Naming.param_key(this_class)
       plural_name = singular_name.pluralize
 
       {
-        :conditions => '',
-        :include => [],
-        :order => ('position ASC' if this_class.connected? && this_class.table_exists? && this_class.column_names.include?('position')),
-        :paging => true,
-        :per_page => false,
-        :redirect_to_url => "refinery.#{Refinery.route_for_model(class_name.constantize, :plural => true)}",
-        :searchable => true,
-        :search_conditions => '',
-        :sortable => true,
-        :title_attribute => "title",
-        :class_name => class_name,
-        :singular_name => singular_name,
-        :plural_name => plural_name
+        conditions: '',
+        include: [],
+        order: (if this_class.connected? && this_class.table_exists? && this_class.column_names.include?('position')
+                  'position ASC'
+                end),
+        paging: true,
+        per_page: false,
+        redirect_to_url: "refinery.#{Refinery.route_for_model(class_name.constantize, plural: true)}",
+        searchable: false,
+        search_conditions: '',
+        sortable: true,
+        title_attribute: 'title',
+        class_name: class_name,
+        singular_name: singular_name,
+        plural_name: plural_name
       }
     end
 
@@ -46,7 +47,6 @@ module Refinery
     end
 
     module ClassMethods
-
       def crudify(model_name, options = {})
         options = ::Refinery::Crud.default_options(model_name).merge(options)
         class_name = options[:class_name]
@@ -254,23 +254,21 @@ module Refinery
             RUBY
           end
 
-        else
-          if options[:paging]
-            module_eval <<-RUBY, __FILE__, __LINE__ + 1
+        elsif options[:paging]
+          module_eval <<-RUBY, __FILE__, __LINE__ + 1
               def index
                 paginate_all_#{plural_name}
 
                 render_partial_response?
               end
-            RUBY
-          else
-            module_eval <<-RUBY, __FILE__, __LINE__ + 1
+          RUBY
+        else
+          module_eval <<-RUBY, __FILE__, __LINE__ + 1
               def index
                 find_all_#{plural_name}
                 render_partial_response?
               end
-            RUBY
-          end
+          RUBY
 
         end
 
@@ -353,8 +351,6 @@ module Refinery
           end
         RUBY
       end
-
     end
-
   end
 end
